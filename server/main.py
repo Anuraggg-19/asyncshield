@@ -7,9 +7,10 @@ from typing import List
 import numpy as np
 import os
 
-from aggregator import RobustAggregator
-from database import AsyncDatabase
-from evaluator import Evaluator  # Imported the Zero-Trust Judge
+from asyncshield.server.aggregator import RobustAggregator
+from asyncshield.server.database import AsyncDatabase
+from asyncshield.server.evaluator import Evaluator
+from asyncshield.config import SERVER_DB_PATH, MODEL_VECTOR_SIZE
 
 app = FastAPI()
 
@@ -21,11 +22,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-db = AsyncDatabase("asyncshield.db")
+db = AsyncDatabase(SERVER_DB_PATH)
 aggregator = RobustAggregator()
-evaluator = Evaluator() # Secret golden set loaded here
+evaluator = Evaluator()
 
-global_model_weights = np.zeros(500000) 
+global_model_weights = np.zeros(MODEL_VECTOR_SIZE) 
 global_version = 1
 
 # ZERO-TRUST: accuracy_improvement is REMOVED from the payload.
@@ -113,7 +114,7 @@ def get_dashboard_data():
 
 @app.get("/download_architecture")
 def download_architecture():
-    file_path = "models.py"
+    file_path = os.path.join(os.path.dirname(__file__), "models.py")
     if os.path.exists(file_path):
         return FileResponse(file_path, media_type="text/x-python", filename="models.py")
     return {"error": "Architecture file not found on server."}

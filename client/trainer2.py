@@ -7,9 +7,9 @@ import requests
 import numpy as np
 import uuid
 
-from standardizer import WeightStandardizer
+from asyncshield.client.standardizer import WeightStandardizer
+from asyncshield.config import SERVER_URL, DATA_DIR, MODEL_VECTOR_SIZE
 
-SERVER_URL = "http://localhost:8000"
 CLIENT_ID = f"alternative-mlp-node-{uuid.uuid4().hex[:4]}"
 
 # A completely different model architecture
@@ -39,7 +39,7 @@ def run_trainer():
 
     # 3. Train on MNIST
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
-    dataset = datasets.MNIST('../data', train=True, download=True, transform=transform)
+    dataset = datasets.MNIST(DATA_DIR, train=True, download=True, transform=transform)
     train_loader = torch.utils.data.DataLoader(torch.utils.data.Subset(dataset, range(500)), batch_size=32)
 
     model.train()
@@ -52,7 +52,7 @@ def run_trainer():
 
     # 4. UNIFIED STANDARDIZATION
     # Even though it's an MLP, we force it into the 500k-vector format
-    standardizer = WeightStandardizer(target_size=500000)
+    standardizer = WeightStandardizer(target_size=MODEL_VECTOR_SIZE)
     updated_1d = standardizer.universal_standardize(model)
     
     # Calculate delta against the global weights

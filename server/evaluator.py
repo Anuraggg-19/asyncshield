@@ -2,19 +2,20 @@
 import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
-from models import RobustCNN, restore_1d_to_model
+
+from asyncshield.server.models import RobustCNN, restore_1d_to_model
+from asyncshield.config import DATA_DIR
 
 class Evaluator:
     def __init__(self):
         # Server-side Secret Golden Dataset initialization
         print("[Server] Initializing Zero-Trust Golden Dataset...")
         transform = transforms.Compose([
-            transforms.ToTensor(), 
+            transforms.ToTensor(),
             transforms.Normalize((0.1307,), (0.3081,))
         ])
-        
-        # We use a 1,000 image subset of MNIST Test for lightning-fast verification
-        test_dataset = datasets.MNIST('../data', train=False, download=True, transform=transform)
+
+        test_dataset = datasets.MNIST(DATA_DIR, train=False, download=True, transform=transform)
         subset = torch.utils.data.Subset(test_dataset, list(range(2000)))
         self.golden_dataloader = DataLoader(subset, batch_size=64, shuffle=False)
         

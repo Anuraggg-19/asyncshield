@@ -1,5 +1,4 @@
 # client/trainer1.py
-
 import torch
 import torch.optim as optim
 from torchvision import datasets, transforms
@@ -9,10 +8,10 @@ import numpy as np
 import uuid
 import random
 
-from models import RobustCNN, restore_1d_to_model
-from standardizer import WeightStandardizer
+from asyncshield.client.models import RobustCNN, restore_1d_to_model
+from asyncshield.client.standardizer import WeightStandardizer
+from asyncshield.config import SERVER_URL, DATA_DIR, MODEL_VECTOR_SIZE
 
-SERVER_URL = "http://localhost:8000"
 CLIENT_ID = f"specialist-node-{uuid.uuid4().hex[:4]}"
 
 def run_trainer():
@@ -34,7 +33,7 @@ def run_trainer():
         transforms.Normalize((0.1307,), (0.3081,))
     ])
 
-    dataset = datasets.MNIST('../data', train=True, download=True, transform=transform)
+    dataset = datasets.MNIST(DATA_DIR, train=True, download=True, transform=transform)
 
     # 🔥 Increased Data from 1000 → 5000
     subset_indices = random.sample(range(len(dataset)), 5000)
@@ -70,7 +69,7 @@ def run_trainer():
             optimizer.step()
 
     # 6️⃣ Standardize and Push
-    standardizer = WeightStandardizer(target_size=500000)
+    standardizer = WeightStandardizer(target_size=MODEL_VECTOR_SIZE)
     updated_1d = standardizer.universal_standardize(model)
     delta = updated_1d - global_weights_1d
 
