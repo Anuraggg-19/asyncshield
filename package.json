@@ -1,0 +1,10 @@
+{
+  "name": "asyncshield",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd dashboard && pnpm dev",
+    "build": "cd dashboard && pnpm build",
+    "start": "cd dashboard && pnpm start"
+  }
+}
