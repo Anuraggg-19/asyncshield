@@ -47,7 +47,7 @@ export default function CommitCard({ commit }: { commit: CommitProps }) {
         {/* Bounty Reward */}
         {commit.bounty > 0 && (
           <div className="text-right text-yellow-400 font-bold text-sm bg-yellow-900/20 px-3 py-1 rounded-md border border-yellow-700/30">
-            +{commit.bounty} 🪙
+            +{commit.bounty}
           </div>
         )}
       </div>

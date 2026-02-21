@@ -1,8 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AsyncShield Dashboard
 
-## Getting Started
+A modern web interface for the AsyncShield federated learning system. This dashboard provides both server monitoring and client submission capabilities.
 
-First, run the development server:
+## Features
+
+### Server Dashboard (`/`)
+- **Live Global Model Version** - Real-time tracking of the current model version
+- **Bounty Leaderboard** - Top contributors ranked by total bounties earned
+- **Commit History** - Feed of recent model updates with acceptance/rejection status
+- **Server Status** - Live connection indicator to FastAPI backend
+
+### Client Interface (`/client`)
+- **Submit Model Updates** - Upload `.pth` files to contribute to the global model
+- **Download Current Model** - Fetch the latest global model weights
+- **Download Architecture** - Get the `models.py` file defining the model structure
+- **Real-time Version Sync** - Automatic synchronization with global model version
+- **Bounty Tracking** - See earned bounties and acceptance status
+
+## Prerequisites
+
+Make sure the AsyncShield FastAPI backend is running:
+
+```bash
+# From the project root
+python -m asyncshield.server
+```
+
+The backend should be accessible at `http://localhost:8000` with the following endpoints:
+- `GET /get_model` - Fetch current global model
+- `POST /submit_update_file` - Submit .pth file updates
+- `GET /dashboard_data` - Retrieve dashboard statistics
+- `GET /download_architecture` - Download models.py
+
+## Installation
+
+```bash
+cd dashboard
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+## Running the Frontend
 
 ```bash
 npm run dev
@@ -10,27 +51,52 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the dashboard.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Configuration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The frontend connects to the backend at `http://localhost:8000` by default. To change this:
 
-## Learn More
+1. Update the API base URL in both page files:
+   - `app/page.tsx` - Dashboard polling endpoint
+   - `app/client/page.tsx` - Client submission endpoints
 
-To learn more about Next.js, take a look at the following resources:
+## How to Use
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### For Contributors (Clients)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Navigate to `/client` or click "View Client" from the dashboard
+2. Generate or enter a unique client ID
+3. Download the current model and architecture to understand the structure
+4. Train your model locally
+5. Upload your trained `.pth` file
+6. The system will automatically:
+   - Validate your update using zero-trust evaluation
+   - Calculate quality improvement
+   - Award bounties if accepted
+   - Update the global model version
 
-## Deploy on Vercel
+### For Monitoring
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. The main dashboard at `/` shows:
+   - Current global model version
+   - Live commit feed with all submissions
+   - Leaderboard of top contributors by bounty
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Design
+
+The interface uses a **dark theme with teal accents** (`hsl(173 80% 40%)`), avoiding generic purple gradients. The design emphasizes:
+- Clean, modern aesthetics with proper whitespace
+- Clear visual hierarchy with consistent typography
+- Real-time status indicators
+- GitHub-style commit history feed
+
+## Tech Stack
+
+- **Next.js 16** (App Router)
+- **React 19.2**
+- **TypeScript**
+- **Tailwind CSS 4**
+- **Geist Font Family**

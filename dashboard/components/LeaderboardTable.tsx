@@ -9,7 +9,7 @@ export default function LeaderboardTable({ data }: { data: Contributor[] }) {
   return (
     <div className="bg-gray-900 p-6 rounded-lg border border-gray-800 shadow-lg h-fit sticky top-10">
       <h2 className="text-xl font-semibold border-b border-gray-800 pb-3 mb-4 flex items-center gap-2">
-        🏆 Top Contributors
+        Top Contributors
       </h2>
       <div className="space-y-3">
         {data.length === 0 && (
@@ -27,7 +27,7 @@ export default function LeaderboardTable({ data }: { data: Contributor[] }) {
                 <span className="text-gray-500 font-mono text-sm">#{idx + 1}</span>
                 <span className="font-mono text-gray-300 text-sm">{user.client}</span>
               </div>
-              <span className="font-bold text-yellow-500">{user.bounty} 🪙</span>
+              <span className="font-bold text-yellow-500">{user.bounty}</span>
             </div>
           ))}
       </div>

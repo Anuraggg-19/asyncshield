@@ -44,7 +44,7 @@ export default function Dashboard() {
       <header className="mb-10 flex flex-col md:flex-row md:items-center justify-between border-b border-gray-800 pb-6 gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3">
-            <span className="text-blue-500">🛡️</span> AsyncShield Hub
+            AsyncShield Hub
           </h1>
           <p className="text-gray-400 text-sm mt-1">
             Decentralized, Asynchronous Federated Learning Network
